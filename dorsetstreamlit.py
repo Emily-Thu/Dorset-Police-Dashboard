@@ -12,7 +12,7 @@ import numpy as np
 # Load the cleaned data
 @st.cache_data
 def load_data():
-    return pd.read_excel("/Users/emilythu/Desktop/Assignments/2nd Sem/Advanced Analytics/working file /Streamlit/Dorset Police Data_cleaned.xlsx")
+    return pd.read_excel("Dorset Police Data_cleaned.xlsx")
 
 df_clean = load_data()
 df_clean['Location'] = df_clean['Location'].str.replace('On or near', '').str.strip()
