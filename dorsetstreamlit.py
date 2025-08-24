@@ -8,7 +8,6 @@ from prophet import Prophet
 import numpy as np
 
 
-
 # Load the cleaned data
 @st.cache_data
 def load_data():
@@ -103,7 +102,7 @@ st.markdown("""
 
 
 # --- Horizontal Tabs ---
-tabs = st.tabs(["Home", "Crime Distribution", "Trends & Top Crimes", "Interactive Map", "Correlation Matrix", "Forecast"])
+tabs = st.tabs(["Home", "Crime Distribution", "Trends & Top Crimes", "Interactive Map", "Forecast"])
 
 # --- Tab 0: Home / Welcome ---
 with tabs[0]:
@@ -251,38 +250,10 @@ with tabs[3]:
         )
     st.plotly_chart(fig_map, use_container_width=True)
 
-
-# --- Tab 4: Crime Heatmap ---
+    
+    
+# --- Tab 4: Crime Forecast ---
 with tabs[4]:
-    st.subheader("Correlation: Outcome Category vs Crime Type")
-
-# Group by Month (or Date) and count occurrences
-    crime_counts = filtered_df.groupby(['Month', 'Crime type']).size().unstack(fill_value=0)
-    outcome_counts = filtered_df.groupby(['Month', 'Last outcome category']).size().unstack(fill_value=0)
-
-# Align the indices (months)
-    crime_counts, outcome_counts = crime_counts.align(outcome_counts, join='inner', axis=0)
-
-# Compute correlation between each crime type and each outcome
-    corr_matrix = pd.DataFrame(index=outcome_counts.columns, columns=crime_counts.columns)
-    for outcome in outcome_counts.columns:
-        for crime in crime_counts.columns:
-            corr_matrix.loc[outcome, crime] = crime_counts[crime].corr(outcome_counts[outcome])
-
-# Convert values to float
-    corr_matrix = corr_matrix.astype(float)
-
-# Plot heatmap
-    fig, ax = plt.subplots(figsize=(12,8))
-    sns.heatmap(corr_matrix, cmap='coolwarm', annot=True, fmt=".2f", ax=ax)
-    ax.set_xlabel("Crime Type")
-    ax.set_ylabel("Outcome Category")
-    st.pyplot(fig)
-    
-    
-    
-# --- Tab 5: Crime Forecast ---
-with tabs[5]:
     st.subheader("Crime Forecast")
     st.markdown("_Forecasting future crimes based on historical trends._")
 
